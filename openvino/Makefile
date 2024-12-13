@@ -19,11 +19,10 @@ INTEL_MODELS = \
 
 PUBLIC_MODELS = \
 	resnet-50-tf \
-	brain-tumor-segmentation-0001 \
 	brain-tumor-segmentation-0002 \
 	ssd_mobilenet_v1_coco
 
-VENV_DIR ?= $(THIS_DIR)/openvino
+VENV_DIR ?= $(THIS_DIR)/openvino_env
 
 ifeq ($(DEBUG),1)
 GRAMINE_LOG_LEVEL = debug
@@ -40,7 +39,7 @@ endif
 .PHONY: intel_models
 intel_models: $(VENV_DIR)/.INSTALLATION_OK
 	@source $(VENV_DIR)/bin/activate \
-	&& cd $(OPENVINO_DIR)/deployment_tools/open_model_zoo/tools/downloader \
+	&& cd $(OPENVINO_DIR)/deployment_tools/open_model_zoo/tools/model_tools \
 	&& for model in $(INTEL_MODELS); do \
 		if [ ! -d $(abspath $(MODEL_DIR))/intel/$$model ]; then \
 			python3 ./downloader.py --name $$model -o $(abspath $(MODEL_DIR)); \
@@ -52,7 +51,7 @@ intel_models: $(VENV_DIR)/.INSTALLATION_OK
 .PHONY: public_models
 public_models: $(VENV_DIR)/.INSTALLATION_OK
 	@source $(VENV_DIR)/bin/activate \
-	&& cd $(OPENVINO_DIR)/deployment_tools/open_model_zoo/tools/downloader \
+	&& cd $(OPENVINO_DIR)/deployment_tools/open_model_zoo/tools/model_tools \
 	&& for model in $(PUBLIC_MODELS); do \
 		if [ ! -d $(abspath $(MODEL_DIR))/public/$$model ]; then \
 			python3 ./downloader.py --name $$model -o $(abspath $(MODEL_DIR)); \
@@ -67,10 +66,10 @@ $(VENV_DIR)/.INSTALLATION_OK:
 	python3 -m venv $(VENV_DIR) \
 	&& source $(VENV_DIR)/bin/activate \
 	&& pip install --upgrade pip \
-	&& pushd $(OPENVINO_DIR)/deployment_tools/open_model_zoo/tools/downloader \
+	&& pushd $(OPENVINO_DIR)/deployment_tools/open_model_zoo/tools/model_tools \
 	&& python3 -mpip install -r ./requirements.in \
 	&& popd \
-	&& pushd $(OPENVINO_DIR)/deployment_tools/model_optimizer \
+	&& pushd $(OPENVINO_DIR)/deployment_tools/open_model_zoo/demos \
 	&& pip3 install -r requirements.txt \
 	&& popd \
 	&& deactivate \
@@ -99,7 +98,7 @@ sgx_sign: benchmark_app.manifest
 benchmark_app: $(OPENVINO_DIR)
 	mkdir -p $(INFERENCE_ENGINE_CPP_SAMPLES_BUILD)
 	cd $(INFERENCE_ENGINE_CPP_SAMPLES_BUILD) \
-	&& cmake -DCMAKE_BUILD_TYPE=Release $(OPENVINO_DIR)/inference_engine/samples/cpp \
+	&& cmake -DCMAKE_BUILD_TYPE=Release $(OPENVINO_DIR)/samples/cpp \
 	&& make
 	ln -s $(INFERENCE_ENGINE_CPP_SAMPLES_BUILD)/intel64/Release/benchmark_app $@
 

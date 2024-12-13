@@ -1,16 +1,16 @@
 # OpenVINO benchmark
 
 This directory contains a Makefile and a template manifest for the most recent version of OpenVINO
-toolkit (as of this writing, version 2021.4). We use the `Benchmark C++ Tool` (benchmark_app) from
+toolkit (as of this writing, version 2024.5). We use the `Benchmark C++ Tool` (benchmark_app) from
 the OpenVINO distribution as a concrete application running under Gramine-SGX to estimate deep
 learning inference performance. We test only the CPU backend (i.e., no GPU or FPGA).
 
 ## Software requirements
 
-- OpenVINO: Please download latest OpenVINO toolkit (as of this writing, version 2021.4) for Linux
+- OpenVINO: Please download latest OpenVINO toolkit (as of this writing, version 2024.5) for Linux
   from https://software.intel.com/content/www/us/en/develop/tools/openvino-toolkit/download.html.
   For OpenVINO installation step-by-step instructions please refer to this
-[link](https://docs.openvino.ai/2021.4/openvino_docs_install_guides_installing_openvino_linux.html).
+[link](https://docs.openvino.ai/2024/get-started/install-openvino.html?PACKAGE=OPENVINO_BASE&VERSION=v_2024_5_0&OP_SYSTEM=WINDOWS&DISTRIBUTION=PIP).
 - Python (version 3.6 or higher)
 - Python virtual environment: `sudo apt-get install python3-venv`
 - CMake (version 3.10 or higher)
@@ -21,7 +21,6 @@ The following models have been tested with Gramine-SGX:
 
 - bert-large-uncased-whole-word-masking-squad-0001 (FP16/FP32)
 - bert-large-uncased-whole-word-masking-squad-int8-0001 (INT8)
-- brain-tumor-segmentation-0001 (FP16/FP32)
 - brain-tumor-segmentation-0002 (FP16/FP32)
 - resnet-50-tf (FP16/FP32)
 - ssd_mobilenet_v1_coco (FP16/FP32)
@@ -29,10 +28,10 @@ The following models have been tested with Gramine-SGX:
 ## Preparing the source
 
 1. Set up OpenVINO environment variables by running:
-    - root user: `source /opt/intel/openvino_2021/bin/setupvars.sh`
-    - root user and set permanently: append `source /opt/intel/openvino_2021/bin/setupvars.sh` to
+    - root user: `source /opt/intel/openvino_2024/setupvars.sh`
+    - root user and set permanently: append `source /opt/intel/openvino_2024/setupvars.sh` to
       `~/.bashrc`
-    - regular user: `source /home/<USER>/intel/openvino_2021/bin/setupvars.sh`
+    - regular user: `source /home/<USER>/intel/openvino_2024/setupvars.sh`
 2. Build: `make SGX=1`
 
 ## Running the benchmark in Gramine-SGX
@@ -146,3 +145,4 @@ same time.
     - Append below entry to `sgx.trusted_files`:
         - `"file:/usr/local/lib/mimalloc-1.7/libmimalloc.so.1.7"`
 - Save the manifest template and rebuild this example.
+
