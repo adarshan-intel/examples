@@ -28,6 +28,11 @@ to contribute a new example to Gramine and you take the Redis example as a
 template, we recommend to remove the comments from your copies as they only add
 noise (see e.g. Memcached for a "stripped-down" example).
 
+Purpose of this repository
+==========================
+
+The purpose of this repository is to provide example applications for running various software on Gramine. It contains examples for applications like `curl`, `gcc`, `iperf`, `mongodb`, `nodejs`, `openjdk`, `openvino`, `pytorch`, `r`, `scikit-learn-intelex`, and `tensorflow-lite`. Each example includes a `README.md` file with instructions for building and running the application under Gramine. Examples use Makefiles to build the original application and configure it to run in Gramine. The repository is intended to help users understand how to run different applications on Gramine and provide templates for creating their own examples.
+
 Known unsupported applications
 ==============================
 
